@@ -1,10 +1,10 @@
 {
 	"name": "tly-api",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A Node.js client for the T.ly URL Shortener API",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"No tests specified\""
+		"test": "node --test"
 	},
 	"keywords": [
 		"t.ly",

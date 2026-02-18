@@ -96,9 +96,96 @@ class TlyClient {
 		return response.data;
 	}
 
-	async getStats(shortUrl) {
+	async bulkUpdateLinks(data) {
+		// data: { links, tags, pixels }
+		const response = await this.client.post('/api/v1/link/bulk/update', data);
+		return response.data;
+	}
+
+	async getStats(shortUrl, params = {}) {
 		const response = await this.client.get('/api/v1/link/stats', {
-			params: { short_url: shortUrl },
+			params: {
+				short_url: shortUrl,
+				...params,
+			},
+		});
+		return response.data;
+	}
+
+	// ===== OneLink Management =====
+
+	async getOneLinkStats(shortUrl, params = {}) {
+		const response = await this.client.get('/api/v1/onelink/stats', {
+			params: {
+				short_url: shortUrl,
+				...params,
+			},
+		});
+		return response.data;
+	}
+
+	async deleteOneLinkStats(data) {
+		// data: { short_url }
+		const response = await this.client.delete('/api/v1/onelink/stat', { data });
+		return response.data;
+	}
+
+	async listOneLinks(params = {}) {
+		const response = await this.client.get('/api/v1/onelink/list', { params });
+		return response.data;
+	}
+
+	// ===== UTM Preset Management =====
+
+	async createUtmPreset(data) {
+		// data: { name, source, medium, campaign, content, term }
+		const response = await this.client.post('/api/v1/link/utm-preset', data);
+		return response.data;
+	}
+
+	async listUtmPresets() {
+		const response = await this.client.get('/api/v1/link/utm-preset');
+		return response.data;
+	}
+
+	async getUtmPreset(id) {
+		const response = await this.client.get(`/api/v1/link/utm-preset/${id}`);
+		return response.data;
+	}
+
+	async updateUtmPreset(id, data) {
+		// data: { name, source, medium, campaign, content, term }
+		const response = await this.client.put(`/api/v1/link/utm-preset/${id}`, data);
+		return response.data;
+	}
+
+	async deleteUtmPreset(id) {
+		const response = await this.client.delete(`/api/v1/link/utm-preset/${id}`);
+		return response.data;
+	}
+
+	// ===== QR Code Management =====
+
+	async getQrCode(params = {}, config = {}) {
+		const response = await this.client.get('/api/v1/link/qr-code', {
+			...config,
+			params,
+		});
+		return response.data;
+	}
+
+	async updateQrCode(data) {
+		// data: { short_url, image, background_color, corner_dots_color, dots_color, dots_style, corner_style }
+		const response = await this.client.put('/api/v1/link/qr-code', data);
+		return response.data;
+	}
+
+	async getLinkStats(shortUrl, params = {}) {
+		const response = await this.client.get('/api/v1/link/stats', {
+			params: {
+				short_url: shortUrl,
+				...params,
+			},
 		});
 		return response.data;
 	}

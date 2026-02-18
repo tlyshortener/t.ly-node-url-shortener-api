@@ -1,14 +1,19 @@
 # T.LY API Client
 
-A Node.js client for the [T.LY URL Shortener](https://t.ly/) API. This package provides convenient methods to manage short links, tags, and pixels through T.LY's API.
+A Node.js client for the [T.LY URL Shortener](https://t.ly/) API. This package provides convenient methods to manage short links, OneLinks, UTM presets, QR codes, tags, and pixels through T.LY's API.
 
 ## Table of Contents
 
 -   [Installation](#installation)
 -   [Getting Started](#getting-started)
+-   [Testing](#testing)
+-   [Publishing](#publishing)
 -   [API Reference](#api-reference)
-    -   [Pixel Management](#pixel-management)
     -   [Short Link Management](#short-link-management)
+    -   [OneLink Management](#onelink-management)
+    -   [UTM Preset Management](#utm-preset-management)
+    -   [QR Code Management](#qr-code-management)
+    -   [Pixel Management](#pixel-management)
     -   [Tag Management](#tag-management)
 -   [Example](#example)
 -   [License](#license)
@@ -18,9 +23,7 @@ A Node.js client for the [T.LY URL Shortener](https://t.ly/) API. This package p
 Install the package via [npm](https://www.npmjs.com/):
 
 ```
-
 npm install tly-api
-
 ```
 
 ## Getting Started
@@ -38,45 +41,28 @@ npm install tly-api
 
 3. **Use the Methods**: You can now call any of the available methods (short link creation, pixel management, tag management, etc.) on the `tly` instance.
 
+## Testing
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+## Publishing
+
+NPM does not allow publishing the same version twice. Before publishing, bump `package.json` version:
+
+```bash
+npm version patch --no-git-tag-version
+npm publish
+```
+
+Use `minor` or `major` instead of `patch` when appropriate.
+
 ## API Reference
 
 Below is a summary of the methods available on the `TlyClient` class. For detailed parameter structures, refer to the inline code comments.
-
-### Pixel Management
-
--   **createPixel(data)**
-    Creates a new pixel.
-    _Example `data`:_
-
-    ```js
-    {
-      name: 'My Facebook Pixel',
-      pixel_id: '123456789',
-      pixel_type: 'facebook'
-    }
-    ```
-
--   **listPixels()**
-    Retrieves a list of all pixels.
-
--   **getPixel(id)**
-    Retrieves a single pixel by its ID.
-
--   **updatePixel(id, data)**
-    Updates the pixel's attributes.
-    _Example `data`:_
-
-    ```js
-    {
-      id: 123,
-      name: 'Updated Pixel',
-      pixel_id: '987654321',
-      pixel_type: 'facebook'
-    }
-    ```
-
--   **deletePixel(id)**
-    Deletes the pixel by its ID.
 
 ### Short Link Management
 
@@ -153,8 +139,71 @@ Below is a summary of the methods available on the `TlyClient` class. For detail
     }
     ```
 
--   **getStats(shortUrl)**
-    Retrieves analytics data for a given short URL.
+-   **bulkUpdateLinks(data)**
+    Updates multiple short links in a single request.
+
+-   **getStats(shortUrl, params)**
+    Retrieves analytics data for a short URL (`/api/v1/link/stats`).
+
+-   **getLinkStats(shortUrl, params)**
+    Alias of `getStats`.
+
+### OneLink Management
+
+-   **getOneLinkStats(shortUrl, params)**
+    Retrieves OneLink analytics (`/api/v1/onelink/stats`).
+    Optional params include `start_date` and `end_date`.
+
+-   **deleteOneLinkStats(data)**
+    Deletes OneLink stats (`/api/v1/onelink/stat`).
+    `data` should include `short_url`.
+
+-   **listOneLinks(params)**
+    Lists OneLinks (`/api/v1/onelink/list`).
+    Optional params include `page`.
+
+### UTM Preset Management
+
+-   **createUtmPreset(data)**
+    Creates a UTM preset.
+
+-   **listUtmPresets()**
+    Lists UTM presets.
+
+-   **getUtmPreset(id)**
+    Retrieves one UTM preset by ID.
+
+-   **updateUtmPreset(id, data)**
+    Updates a UTM preset by ID.
+
+-   **deleteUtmPreset(id)**
+    Deletes a UTM preset by ID.
+
+### QR Code Management
+
+-   **getQrCode(params, config)**
+    Gets a QR code (`/api/v1/link/qr-code`).
+    Use params like `short_url`, `output`, and `format`.
+
+-   **updateQrCode(data)**
+    Updates QR code options (`/api/v1/link/qr-code`).
+
+### Pixel Management
+
+-   **createPixel(data)**
+    Creates a new pixel.
+
+-   **listPixels()**
+    Retrieves a list of all pixels.
+
+-   **getPixel(id)**
+    Retrieves a single pixel by its ID.
+
+-   **updatePixel(id, data)**
+    Updates the pixel's attributes.
+
+-   **deletePixel(id)**
+    Deletes the pixel by its ID.
 
 ### Tag Management
 
